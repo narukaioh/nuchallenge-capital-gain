@@ -1,0 +1,32 @@
+{
+  "name": "nuchallenge-capital-gain",
+  "version": "1.0.0",
+  "description": "um programa de linha de comando (CLI) que calcula o imposto a ser pago sobre lucros ou prejuízos de operações no mercado financeiro de ações.",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "npx babel-node src/app.js",
+    "test": "npx jest --coverage"
+  },
+  "keywords": [
+    "nubank",
+    "exercise",
+    "capital",
+    "gain",
+    "javascript"
+  ],
+  "author": "Ju Dantas",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.22.6",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.22.6",
+    "babel-jest": "^29.6.0",
+    "eslint": "^8.44.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.2",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "jest": "^29.6.0"
+  }
+}

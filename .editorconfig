@@ -1,0 +1,11 @@
+# Configurações gerais
+root = true
+
+# Definir o estilo do fim de linha como LF (Unix-style)
+[*]
+end_of_line = lf
+
+# Definir o espaçamento do projeto como 2 espaços
+[*.{js,jsx,ts,tsx,json,html,css,scss}]
+indent_style = space
+indent_size = 2
