@@ -1,3 +1,5 @@
-export const getTax = (operations) => {
-  return operations.map(operation => ({ tax: 0 }))
+import { calculateTax } from './calculateTax'
+
+export const getTax = (operationsList) => {
+  return operationsList.map(operations => calculateTax(operations))
 }
