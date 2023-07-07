@@ -1,9 +1,18 @@
 export const calculateTax = (operations) => {
-  console.log({ operations })
-  return operations.reduce((acc, cur) => {
-    if (cur.operation === 'buy') {
-      return { tax: 0 }
+  const state = { total: 0, amount: 0 }
+
+  return operations.map((state, transaction) => {
+    const { operation, quantity, 'unit-cost': unitCost } = transaction
+    const nowQuantity = operation === 'sell' ? -quantity : quantity
+    let tax = 0
+
+    const lastAmount = state.total
+    state.total = state.total + nowQuantity
+    state.amount = state.amount + nowQuantity * unitCost
+
+    if (operation === 'sell') {
+      tax = (lastAmount > state.total) ? 0 : 10000
     }
-    return { tax: 0 }
-  }, { tax: 0 })
+    return { tax }
+  })
 }
