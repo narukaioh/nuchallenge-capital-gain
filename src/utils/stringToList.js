@@ -1,3 +1,3 @@
 export const stringToList = string => {
-  return string.split('\n').map(line => JSON.parse(line))
+  return string.split('\n').filter(line => line !== '').map(line => JSON.parse(line))
 }
