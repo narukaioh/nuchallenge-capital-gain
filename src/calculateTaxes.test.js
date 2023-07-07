@@ -41,14 +41,14 @@ describe('calculateTaxes', () => {
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 
-  test('should no pay any tax on operations that exist loss 2', () => {
+  test('should deduct the loss when sell operations occur', () => {
     const operations = [
       { 'operation': 'buy', 'unit-cost': 10.00, 'quantity': 10000 },
-      { 'operation': 'sell', 'unit-cost': 20.00, 'quantity': 5000 },
-      { 'operation': 'sell', 'unit-cost': 5.00, 'quantity': 5000 }
+      { 'operation': 'sell', 'unit-cost': 5.00, 'quantity': 5000 },
+      { 'operation': 'sell', 'unit-cost': 20.00, 'quantity': 3000 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 10000 }, { tax: 0 }]
+    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 1000 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 })
