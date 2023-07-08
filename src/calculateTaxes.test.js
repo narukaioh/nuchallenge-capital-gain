@@ -51,4 +51,27 @@ describe('calculateTaxes', () => {
     const expected = [{ tax: 0 }, { tax: 0 }, { tax: 1000 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
+
+  test('should calculate the weighted avarage price between two "buy" operations', () => {
+    const operations = [
+      { 'operation': 'buy', 'unit-cost': 10.00, 'quantity': 10000 },
+      { 'operation': 'buy', 'unit-cost': 25.00, 'quantity': 5000 },
+      { 'operation': 'sell', 'unit-cost': 15.00, 'quantity': 10000 }
+    ]
+
+    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 0 }]
+    expect(calculateTaxes(operations)).toEqual(expected)
+  })
+
+  test('should not charge taxes if the weighted average price and the operation price are equal', () => {
+    const operations = [
+      { 'operation': 'buy', 'unit-cost': 10.00, 'quantity': 10000 },
+      { 'operation': 'buy', 'unit-cost': 25.00, 'quantity': 5000 },
+      { 'operation': 'sell', 'unit-cost': 15.00, 'quantity': 10000 },
+      { 'operation': 'sell', 'unit-cost': 25.00, 'quantity': 5000 }
+    ]
+
+    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 0 }, { tax: 10000 }]
+    expect(calculateTaxes(operations)).toEqual(expected)
+  })
 })

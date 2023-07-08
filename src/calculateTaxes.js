@@ -1,6 +1,6 @@
 const isWithinLimit = ({ quantity, cost }) => (quantity * cost) >= 20000
 
-const hasLoss = ({ media, cost }) => media < cost
+const hasLoss = ({ media, cost }) => media > cost
 
 const calculateTax = ({ media, cost, quantity, loss }) => (((cost - media) * quantity) - loss) * 0.2
 
@@ -9,6 +9,7 @@ export const calculateTaxes = (operations) => {
 
   return operations.map(({ operation, quantity, 'unit-cost': cost }) => {
     const actualQuantity = (operation === 'sell' ? -quantity : quantity)
+    let tax = 0
 
     initialState.stocks = initialState.stocks + actualQuantity
     initialState.amount = initialState.amount + (actualQuantity * cost)
@@ -20,14 +21,30 @@ export const calculateTaxes = (operations) => {
       initialState.media = amount / stocks
     }
 
-    if (operation === 'sell' && isWithinLimit({ quantity, cost }) && hasLoss({ media: initialState.media, cost })) {
-      return { tax: calculateTax({ loss: initialState.loss, media: initialState.media, cost, quantity }) }
+    if (operation === 'sell' && isWithinLimit({ quantity, cost }) && !hasLoss({ media: initialState.media, cost })) {
+      // if (initialState.loss >= 0) {
+      //   initialState.loss = initialState.loss + (quantity * (initialState.media - cost))
+      // }
+
+      const params = {
+        loss: initialState.loss,
+        media: initialState.media,
+        cost,
+        quantity
+      }
+
+      // return {
+      //   tax: initialState.loss >= 0 ? calculateTax(params) : 0
+      // }
+      tax = calculateTax(params)
     }
 
-    if (operation === 'sell' && !hasLoss({ media: initialState.media, cost })) {
-      initialState.loss = initialState.loss + (quantity * cost)
+    if (operation === 'sell' && hasLoss({ media: initialState.media, cost })) {
+      initialState.loss = (initialState.media !== cost)
+        ? initialState.loss + (quantity * (initialState.media - cost))
+        : 0
     }
 
-    return { tax: 0 }
+    return { tax }
   })
 }
