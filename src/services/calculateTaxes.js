@@ -1,22 +1,9 @@
-const isWithinLimit = ({ quantity, cost }) => (quantity * cost) >= 20000
-
-const hasLoss = ({ averageCost, cost }) => averageCost > cost
-
-const calculateTotal = ({ averageCost, cost, quantity }) => (cost - averageCost) * quantity
-
-const calculateTax = (value) => value * 0.2
-
-const isSellOperation = (operation) => operation === 'sell'
-
-const calculateWeightedAverage = (historic) => {
-  const amount = historic.reduce((acc, cur) => acc + cur.quantity * cur.cost, 0)
-  const stocks = historic.reduce((acc, cur) => acc + cur.quantity, 0)
-  return amount / stocks
-}
-
-const isDeductible = (total, loss) => total <= loss
-
-const hasStocks = (stocks) => stocks > 0
+import {
+  isSellOperation,
+  isDeductible, isWithinLimit,
+  calculateTax, calculateWeightedAverage,
+  calculateTotal, hasLoss, hasStocks
+} from './utils'
 
 const updateState = (state, { operation, quantity, cost }) => {
   const actualQuantity = isSellOperation(operation) ? -quantity : quantity
