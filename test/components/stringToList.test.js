@@ -1,4 +1,4 @@
-import { stringToList } from './stringToList'
+import { stringToList } from '../../src/components/stringToList'
 
 describe('stringToList', () => {
   test('should receive a string and return a javascript list', () => {

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { readFile } from './readFile'
+import { readFile } from '../../src/components/readFile'
 
 jest.mock('fs')
 

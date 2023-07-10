@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 
-import { getTaxes } from './getTaxes'
+import { getTaxes } from '../../src/services/getTaxes'
 
 describe('getTaxes', () => {
   test('should return a tax object for each operation', () => {

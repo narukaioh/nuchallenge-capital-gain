@@ -1,4 +1,4 @@
-import { calculateTaxes } from './calculateTaxes'
+import { calculateTaxes } from '../../src/services/calculateTaxes'
 
 /* eslint-disable quote-props */
 describe('calculateTaxes', () => {
