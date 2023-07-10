@@ -43,6 +43,12 @@ export const calculateTaxes = (operations) => {
 
       total -= initialState.loss
       initialState.loss = 0
+
+      if (initialState.stocks <= 0) {
+        initialState.historic = []
+        initialState.media = 0
+      }
+
       return { tax: calculateTax(total) }
     }
 

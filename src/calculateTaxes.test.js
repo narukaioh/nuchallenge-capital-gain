@@ -4,7 +4,7 @@ import { calculateTaxes } from './calculateTaxes'
 describe('calculateTaxes', () => {
   test('should no pay any tax in a "buy" operations', () => {
     const operations = [{ 'operation': 'buy', 'unit-cost': 10.00, 'quantity': 10000 }]
-    const expected = [{ tax: 0 }]
+    const expected = [{ tax: 0.00 }]
 
     expect(calculateTaxes(operations)).toEqual(expected)
   })
@@ -16,7 +16,7 @@ describe('calculateTaxes', () => {
       { 'operation': 'sell', 'unit-cost': 15.00, 'quantity': 50 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 0 }]
+    const expected = [{ tax: 0.00 }, { tax: 0.00 }, { tax: 0.00 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 
@@ -26,7 +26,7 @@ describe('calculateTaxes', () => {
       { 'operation': 'sell', 'unit-cost': 20.00, 'quantity': 5000 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 10000 }]
+    const expected = [{ tax: 0.00 }, { tax: 10000.00 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 
@@ -37,7 +37,7 @@ describe('calculateTaxes', () => {
       { 'operation': 'sell', 'unit-cost': 5.00, 'quantity': 5000 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 10000 }, { tax: 0 }]
+    const expected = [{ tax: 0.00 }, { tax: 10000.00 }, { tax: 0.00 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 
@@ -48,7 +48,7 @@ describe('calculateTaxes', () => {
       { 'operation': 'sell', 'unit-cost': 20.00, 'quantity': 3000 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 1000 }]
+    const expected = [{ tax: 0.00 }, { tax: 0.00 }, { tax: 1000.00 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 
@@ -59,7 +59,7 @@ describe('calculateTaxes', () => {
       { 'operation': 'sell', 'unit-cost': 15.00, 'quantity': 10000 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 0 }]
+    const expected = [{ tax: 0.00 }, { tax: 0.00 }, { tax: 0.00 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 
@@ -71,7 +71,7 @@ describe('calculateTaxes', () => {
       { 'operation': 'sell', 'unit-cost': 25.00, 'quantity': 5000 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 0 }, { tax: 10000 }]
+    const expected = [{ tax: 0.00 }, { tax: 0.00 }, { tax: 0.00 }, { tax: 10000.00 }]
     expect(calculateTaxes(operations)).toEqual(expected)
   })
 
@@ -84,7 +84,41 @@ describe('calculateTaxes', () => {
       { 'operation': 'sell', 'unit-cost': 25.00, 'quantity': 1000 }
     ]
 
-    const expected = [{ tax: 0 }, { tax: 0 }, { tax: 0 }, { tax: 0 }, { tax: 3000 }]
+    const expected = [{ tax: 0.00 }, { tax: 0.00 }, { tax: 0.00 }, { tax: 0.00 }, { tax: 3000.00 }]
     expect(calculateTaxes(operations)).toEqual(expected)
+  })
+
+  test('should recalculate a new average when all stocks are sold', () => {
+    const operations = [
+      { 'operation': 'buy', 'unit-cost': 10.00, 'quantity': 10000 },
+      { 'operation': 'sell', 'unit-cost': 2.00, 'quantity': 5000 },
+      { 'operation': 'sell', 'unit-cost': 20.00, 'quantity': 2000 },
+      { 'operation': 'sell', 'unit-cost': 20.00, 'quantity': 2000 },
+      { 'operation': 'sell', 'unit-cost': 25.00, 'quantity': 1000 },
+      { 'operation': 'buy', 'unit-cost': 20.00, 'quantity': 10000 },
+      { 'operation': 'sell', 'unit-cost': 15.00, 'quantity': 5000 },
+      { 'operation': 'sell', 'unit-cost': 30.00, 'quantity': 4350 },
+      { 'operation': 'sell', 'unit-cost': 30.00, 'quantity': 650 }
+    ]
+
+    const expected = [
+      { tax: 0.00 }, { tax: 0.00 }, { tax: 0.00 }, { tax: 0.00 }, { tax: 3000 },
+      { tax: 0.00 }, { tax: 0.00 }, { tax: 3700 }, { tax: 0.00 }
+    ]
+
+    const operations2 = [
+      { 'operation': 'buy', 'unit-cost': 10.00, 'quantity': 10000 },
+      { 'operation': 'sell', 'unit-cost': 50.00, 'quantity': 10000 },
+      { 'operation': 'buy', 'unit-cost': 20.00, 'quantity': 10000 },
+      { 'operation': 'sell', 'unit-cost': 50.00, 'quantity': 10000 }
+    ]
+
+    const expected2 = [
+      { 'tax': 0.00 }, { 'tax': 80000.00 },
+      { 'tax': 0.00 }, { 'tax': 60000.00 }
+    ]
+
+    expect(calculateTaxes(operations)).toEqual(expected)
+    expect(calculateTaxes(operations2)).toEqual(expected2)
   })
 })
